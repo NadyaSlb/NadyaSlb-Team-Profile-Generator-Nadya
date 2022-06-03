@@ -1,0 +1,28 @@
+{
+  "name": "challenge-10",
+  "version": "1.0.0",
+  "description": "team profile generator",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NadyaSlb/NadyaSlb-Team-Profile-Generator-Nadya.git"
+  },
+  "author": "Nadya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NadyaSlb/NadyaSlb-Team-Profile-Generator-Nadya/issues"
+  },
+  "homepage": "https://github.com/NadyaSlb/NadyaSlb-Team-Profile-Generator-Nadya#readme",
+  "dependencies": {
+    "inquirer": "^8.2.4"
+  },
+  "devDependencies": {
+    "jest": "^28.1.0"
+  }
+}
