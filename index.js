@@ -4,7 +4,10 @@ const Employee = require('./lib/Employee');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
-var teamArray = []
+const generateHTML = require('./src/htmltemplate');
+var engineers = []
+var interns = []
+var manager = {}
 
 // class TeamBuilder {
 //     constructor() {
@@ -43,16 +46,39 @@ const startMenu = () => {
       message: 'What is the manager`s office number?'
     }
   ]).then(data => {
-    const manager = new Manager(data.name, data.id, data.email, data.officeNumber)
+   manager = new Manager(data.name, data.id, data.email, data.officeNumber)
     console.log(manager)
-    teamArray.push(manager)
-    console.log(teamArray)
+    console.log(manager.name)
     secondMenu();
   })
 }
 
-
 const secondMenu = () => {
+  inquirer.prompt([
+    {
+      type: 'list',
+      name: 'userchoice',
+      message: 'Do you want to add an employee?',
+      choices: ['yes', 'no']
+    }
+  ]).then(choice => {
+    if (choice.userchoice == 'yes' ) {
+      thirdMenu()
+    }
+    if (choice.userchoice == 'no' ) {
+    generateHTML()
+    .then(pageHTML => {
+      return writeToFile(pageHTML);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+    }
+  })
+}
+
+const thirdMenu = () => {
   inquirer.prompt([
     {
       type: 'list',
@@ -61,42 +87,90 @@ const secondMenu = () => {
       choices: ['engineer', 'intern']
     }
   ]).then(choice => {
-    console.log(choice)
     if (choice.userchoice == 'engineer' ) {
-      createEngineer()
-      console.log(teamArray)
+      createEnqineer()
     }
-    if (choice == 'intern' ) console.log("intern")
-
+    if (choice.userchoice == 'intern' ) {
+      createIntern()
+    }
   })
 }
 
-
-
-const startEnqineer = () => {
+const createEnqineer = () => {
   inquirer.prompt([
     {
       type: 'text',
       name: 'name',
-      message: 'What is the manager`s name?'
+      message: 'What is the employee`s name?'
     },
     {
       type: 'text',
       name: 'id',
-      message: 'What is the manager`s id?'
+      message: 'What is the employee`s id?'
     },
     {
       type: 'text',
       name: 'email',
-      message: 'What is the manager`s email?'
+      message: 'What is the employee`s email?'
     },
     {
       type: 'text',
-      name: 'officeNumber',
-      message: 'What is the manager`s office number?'
-
-    }])
+      name: 'github',
+      message: 'What is the ingineer`s github username?'
+    }]).then(data => {
+      const engineer = new Engineer(data.name, data.id, data.email, data.github)
+      console.log(engineer)
+      engineers.push(engineer)
+      console.log(engineers)
+      secondMenu()
+    })
 }
+
+const createIntern = () => {
+  inquirer.prompt([
+    {
+      type: 'text',
+      name: 'name',
+      message: 'What is the employee`s name?'
+    },
+    {
+      type: 'text',
+      name: 'id',
+      message: 'What is the employee`s id?'
+    },
+    {
+      type: 'text',
+      name: 'email',
+      message: 'What is the employee`s email?'
+    },
+    {
+      type: 'text',
+      name: 'school',
+      message: 'What is the intern`s school?'
+    }]).then(data => {
+      const intern = new Intern(data.name, data.id, data.email, data.school)
+      console.log(intern)
+      interns.push(intern)
+      console.log(interns)
+      secondMenu()
+    })
+}
+
+const writeToFile = fileContent => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile('./dist/index.html', fileContent, err => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve({
+        ok: true,
+        message: 'File created!'
+      });
+    });
+  });
+};
+module.exports = writeToFile;
 
 startMenu()
 // inquirer.prompt(,/.....)
