@@ -5,9 +5,8 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const generateHTML = require('./src/htmltemplate');
-var engineers = []
-var interns = []
-var manager = {}
+var team = []
+
 
 // class TeamBuilder {
 //     constructor() {
@@ -46,9 +45,9 @@ const startMenu = () => {
       message: 'What is the manager`s office number?'
     }
   ]).then(data => {
-   manager = new Manager(data.name, data.id, data.email, data.officeNumber)
+   const manager = new Manager(data.name, data.id, data.email, data.officeNumber)
     console.log(manager)
-    console.log(manager.name)
+    team.push(manager)
     secondMenu();
   })
 }
@@ -66,13 +65,13 @@ const secondMenu = () => {
       thirdMenu()
     }
     if (choice.userchoice == 'no' ) {
-    generateHTML()
-    .then(pageHTML => {
-      return writeToFile(pageHTML);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    // generateHTML(manager)
+    // .then(pageHTML => {
+    //   return writeToFile(pageHTML);
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    // });
 
     }
   })
@@ -120,8 +119,8 @@ const createEnqineer = () => {
     }]).then(data => {
       const engineer = new Engineer(data.name, data.id, data.email, data.github)
       console.log(engineer)
-      engineers.push(engineer)
-      console.log(engineers)
+      team.push(engineer)
+      console.log(team)
       secondMenu()
     })
 }
@@ -150,8 +149,8 @@ const createIntern = () => {
     }]).then(data => {
       const intern = new Intern(data.name, data.id, data.email, data.school)
       console.log(intern)
-      interns.push(intern)
-      console.log(interns)
+      team.push(intern)
+      console.log(team)
       secondMenu()
     })
 }
